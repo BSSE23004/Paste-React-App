@@ -4,10 +4,12 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
   LinkedinShareButton,
+  EmailShareButton,
   FacebookIcon,
   TwitterIcon,
   WhatsappIcon,
   LinkedinIcon,
+  EmailIcon,
 } from "react-share";
 
 const ShareButtons = ({ onShare }) => {
@@ -20,14 +22,21 @@ const ShareButtons = ({ onShare }) => {
   const title = "Check out this awesome website!";
 
   const handleClick = () => {
-    // Optional delay to let the share dialog open first
     setTimeout(() => {
-      onShare(); // Call parent function to hide ShareButtons
+      onShare();
     }, 300);
   };
 
+  const handleEmailClick = () => {
+    const mailtoLink = `mailto:?subject=${encodeURIComponent(
+      title
+    )}&body=${encodeURIComponent("Take a look at this: " + shareUrl)}`;
+    window.location.href = mailtoLink;
+    handleClick();
+  };
+
   return (
-    <div className="flex flex-row gap-4  w-full justify-end">
+    <div className="flex gap-3">
       <FacebookShareButton url={shareUrl} quote={title} onClick={handleClick}>
         <FacebookIcon
           size={32}
@@ -63,6 +72,13 @@ const ShareButtons = ({ onShare }) => {
           className="transition-transform duration-300 hover:-translate-y-1"
         />
       </LinkedinShareButton>
+      <EmailShareButton url={shareUrl} title={title} onClick={handleEmailClick}>
+        <EmailIcon
+          size={32}
+          round
+          className="transition-transform duration-300 hover:-translate-y-1"
+        />
+      </EmailShareButton>
     </div>
   );
 };
